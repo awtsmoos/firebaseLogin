@@ -27,7 +27,7 @@ B"H
       import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
     
     window.sign=signInWithEmailAndPassword
-    const firebaseConfig = {
+    const firebaseApp= {
     apiKey: "AIzaSyCgPHEOvuukNruv5oqExFFHI7FEnBgJphc",
     authDomain: "nayss-bc463.firebaseapp.com",
     projectId: "nayss-bc463",
@@ -39,7 +39,7 @@ B"H
 
     const auth = getAuth(firebaseApp)
     window.a=auth
-    
+    console.("hi",a)
     cr.onclick = () => {
       create(usrn.value,psrd.value)
       .then(r=>{
