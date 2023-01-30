@@ -16,7 +16,7 @@ B"H
   <textarea id="tok"></textarea>
     <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
     <script type="module">
-        
+        try{
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
   
       // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
@@ -88,6 +88,9 @@ function create(us,ps) {
     });
   })
   
+}
+} catch(c){
+alert(c)
 }
     </script>
   </body>
