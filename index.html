@@ -1,0 +1,93 @@
+B"H
+<br>
+<body>
+  
+  <br>
+  <label for="usrn">Username</label><input id="usrn"><br>
+  <label for="psrwrd">Password</label><input id="psrd">
+  <br>
+  <button id="lg">Log in!</button>
+  <button id="cr">Create new user</button>
+  <br>
+  <h4>Error:</h4>
+  <div id="err"></div>
+  <br>
+  <h4>Authorization header value:</h4>
+  <textarea id="tok"></textarea>
+    <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+    <script type="module">
+        
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
+  
+      // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+      import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js'
+  
+      // Add Firebase products that you want to use
+      import { getAuth, signInWithEmailAndPassword ,createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js'
+      import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
+    
+    window.sign=signInWithEmailAndPassword
+    const firebaseConfig = {
+    apiKey: "AIzaSyCgPHEOvuukNruv5oqExFFHI7FEnBgJphc",
+    authDomain: "nayss-bc463.firebaseapp.com",
+    projectId: "nayss-bc463",
+    storageBucket: "nayss-bc463.appspot.com",
+    messagingSenderId: "115305792128",
+    appId: "1:115305792128:web:22093e854796e1bf8f5c65"
+  };
+
+
+    const auth = getAuth(firebaseApp)
+    window.a=auth
+    
+    cr.onclick = () => {
+      create(usrn.value,psrd.value)
+      .then(r=>{
+        tok.innerHTML = "Bearer "+
+          r._tokenResponse.idToken
+      }).catch(e=>{
+        err.innerHTML = e.message+""
+      })
+    }
+
+    lg.onclick = () => {
+      signin(usrn.value,psrd.value)
+      .then(r=>{
+        tok.innerHTML = "Bearer "+
+          r._tokenResponse.idToken
+      }).catch(e=>{
+        err.innerHTML = e+""
+      })
+    }
+
+    
+    
+  function signin(us,ps) {
+    return new Promise((rs,j) => signInWithEmailAndPassword(a,us, ps)
+.then(r=>console.log(window.w=r,r._tokenResponse.idToken,rs(r)))
+.catch(e=>console.log(e,j(e))))
+  }
+  window.signin=signin
+  window.create=create
+
+  
+function create(us,ps) {
+  return new Promise((r,j) => {
+    createUserWithEmailAndPassword(auth, us,ps)
+    .then((userCredential) => {
+
+      const user = userCredential.user;
+      console.log(window.us=userCredential)
+      r(userCredential)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(error,errorMessage)
+      j(error)
+    });
+  })
+  
+}
+    </script>
+  </body>
