@@ -1,7 +1,7 @@
 B"H
 <br>
 <body>
-  
+  Hello.
   <br>
   <label for="usrn">Username</label><input id="usrn"><br>
   <label for="psrwrd">Password</label><input id="psrd">
@@ -27,7 +27,7 @@ B"H
       import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
     
     window.sign=signInWithEmailAndPassword
-    const firebaseApp= {
+    const firebaseConfig {
     apiKey: "AIzaSyCgPHEOvuukNruv5oqExFFHI7FEnBgJphc",
     authDomain: "nayss-bc463.firebaseapp.com",
     projectId: "nayss-bc463",
@@ -35,9 +35,9 @@ B"H
     messagingSenderId: "115305792128",
     appId: "1:115305792128:web:22093e854796e1bf8f5c65"
   };
+const app = initializeApp(firebaseConfig);
 
-
-    const auth = getAuth(firebaseApp)
+    const auth = getAuth(app)
     window.a=auth
     console.("hi",a)
     cr.onclick = () => {
