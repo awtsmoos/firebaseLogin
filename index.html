@@ -26,7 +26,7 @@ B"H
      }*/
      function mj(str) {
         try {
-          return JSON.parse(str)
+          return eval("("+str+")")
         } catch(e){return null;}
      }
     </script>
