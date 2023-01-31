@@ -89,7 +89,7 @@ B"H
     
     
   function signin(us,ps) {
-    return new Promise((rs,j) => signInWithEmailAndPassword(a,us, ps)
+    return new Promise((rs,j) => signInWithEmailAndPassword(auth,us, ps)
     .then(r=>console.log(window.w=r,r._tokenResponse.idToken,rs(r)))
     .catch(e=>console.log(e,j(e))))
   }
