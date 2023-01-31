@@ -1,10 +1,15 @@
 B"H
 <br>
 <body>
-  Hello.
+  Hello. Enter your firebase config data below (info doesn't leave webpage [besides for sending to your firebase etc],
+  check source if you don't believe it):
+  <br>
+  <textarea id="configData"></textarea>
+  <br>
+  <button id="inap">Init App</button>
   <br>
   <label for="usrn">Username</label><input id="usrn"><br>
-  <label for="psrwrd">Password</label><input id="psrd">
+  <label for="psrd">Password</label><input id="psrd">
   <br>
   <button id="lg">Log in!</button>
   <button id="cr">Create new user</button>
@@ -13,8 +18,18 @@ B"H
   <div id="err"></div>
   <br>
   <h4>Authorization header value:</h4>
-  <textarea id="tok"></textarea>
-    <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+  <textarea id="tok"></textarea>\
+    <script>
+     /*var mem = mj(localStorage.firebaseConfigAwtsmoos);
+     if(mem) {
+      configData.value=mem;
+     }*/
+     function mj(str) {
+        try {
+          return JSON.parse(str)
+        } catch(e){return null;}
+     }
+    </script>
     <script type="module">
         
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
@@ -27,17 +42,26 @@ B"H
       import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
     
     window.sign=signInWithEmailAndPassword
-    const firebaseConfig = {
-    apiKey: "AIzaSyCgPHEOvuukNruv5oqExFFHI7FEnBgJphc",
-    authDomain: "nayss-bc463.firebaseapp.com",
-    projectId: "nayss-bc463",
-    storageBucket: "nayss-bc463.appspot.com",
-    messagingSenderId: "115305792128",
-    appId: "1:115305792128:web:22093e854796e1bf8f5c65"
-  };
-const app = initializeApp(firebaseConfig);
+      var app;
+      var auth;
+    function startApp(firebaseConfig) {
+      
+      app = initializeApp(firebaseConfig);
 
-    const auth = getAuth(app)
+      auth = getAuth(app)
+      inap.innerHTML = "Initted firebase app. Again?"
+      attempts = 0;
+    }
+      var attempts = 0
+     inap.onclick = () => {
+       var js = mj(configData)
+       if(!js) return inap.innerHTML = "Invalid config input. Try again? Attemps: "+
+         (++attempts);
+       startApp(js)
+     };
+   
+      
+   
     window.a=auth
     console.log("hi",a)
     cr.onclick = () => {
