@@ -1,7 +1,7 @@
 B"H
 <br>
 <body>
-  Hello. Enter your firebase config data below (just the JS object without the semicolon):
+  Hello. Enter your firebase config data below:
   
   <br>
   <textarea id="configData" rows=17 cols=60></textarea>
@@ -20,7 +20,7 @@ B"H
   <div id="err"></div>
   <br>
   <h4>Authorization header value:</h4>
-  <textarea rows=16 cols=20 id="tok"></textarea>
+  <textarea rows=20 cols=7 id="tok"></textarea>
    
     <script type="module">
       var psrd = document.getElementById("psrd")
@@ -163,6 +163,33 @@ async function signInWithEmailAndPassword(email, password,key) {
   } catch (error) {
     throw error;
   }
+}
+
+async function signInWithGoogle(
+    YOUR_CLIENT_ID,
+    YOUR_REDIRECT_URI,
+    YOUR_CLIENT_SECRET
+) {
+  // Request to retrieve the authorization code
+  const response = await fetch(
+    `https://accounts.google.com/o/oauth2/v2/auth?scope=email&client_id=${YOUR_CLIENT_ID}&redirect_uri=${YOUR_REDIRECT_URI}&response_type=code`
+  );
+  const authorizationCode = await response.text();
+
+  // Request to exchange the authorization code for an access token
+  const accessTokenResponse = await fetch(
+    `https://oauth2.googleapis.com/token?code=${authorizationCode}&client_id=${YOUR_CLIENT_ID}&client_secret=${YOUR_CLIENT_SECRET}&redirect_uri=${YOUR_REDIRECT_URI}&grant_type=authorization_code`
+  );
+  const accessToken = await accessTokenResponse.json();
+
+  // Request to retrieve the user profile information
+  const profileResponse = await fetch(
+    `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken.access_token}`
+  );
+  const profile = await profileResponse.json();
+
+  // Log the user in to your app using the profile information
+  console.log('Logged in with Google:', profile);
 }
 
 
