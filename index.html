@@ -16,7 +16,7 @@ B"H
   <textarea id="tok"></textarea>
     <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
     <script type="module">
-        try{
+        
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
   
       // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
@@ -27,7 +27,7 @@ B"H
       import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
     
     window.sign=signInWithEmailAndPassword
-    const firebaseConfig {
+    const firebaseConfig = {
     apiKey: "AIzaSyCgPHEOvuukNruv5oqExFFHI7FEnBgJphc",
     authDomain: "nayss-bc463.firebaseapp.com",
     projectId: "nayss-bc463",
@@ -39,11 +39,11 @@ const app = initializeApp(firebaseConfig);
 
     const auth = getAuth(app)
     window.a=auth
-    console.("hi",a)
+    console.log("hi",a)
     cr.onclick = () => {
       create(usrn.value,psrd.value)
       .then(r=>{
-        tok.innerHTML = "Bearer "+
+        tok.value = "Bearer "+
           r._tokenResponse.idToken
       }).catch(e=>{
         err.innerHTML = e.message+""
@@ -53,10 +53,10 @@ const app = initializeApp(firebaseConfig);
     lg.onclick = () => {
       signin(usrn.value,psrd.value)
       .then(r=>{
-        tok.innerHTML = "Bearer "+
+        tok.value = "Bearer "+
           r._tokenResponse.idToken
       }).catch(e=>{
-        err.innerHTML = e+""
+        err.innerHTML = e.message+""
       })
     }
 
@@ -64,8 +64,8 @@ const app = initializeApp(firebaseConfig);
     
   function signin(us,ps) {
     return new Promise((rs,j) => signInWithEmailAndPassword(a,us, ps)
-.then(r=>console.log(window.w=r,r._tokenResponse.idToken,rs(r)))
-.catch(e=>console.log(e,j(e))))
+    .then(r=>console.log(window.w=r,r._tokenResponse.idToken,rs(r)))
+    .catch(e=>console.log(e,j(e))))
   }
   window.signin=signin
   window.create=create
@@ -89,8 +89,6 @@ function create(us,ps) {
   })
   
 }
-} catch(c){
-alert(c)
-}
+
     </script>
   </body>
