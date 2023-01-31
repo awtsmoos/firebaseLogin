@@ -63,6 +63,7 @@ B"H
         console.log("Trying to create",usrn.value,psrd.value)
       create(usrn.value,psrd.value)
       .then(r=>{
+        err.innerHTML=""
         console.log("Created!",r)
         tok.value = "Bearer "+
           r.idToken
@@ -75,6 +76,7 @@ B"H
     lg.onclick = () => {
       signin(usrn.value,psrd.value)
       .then(r=>{
+        err.innerHTML=""
         console.log("SIGNED!",r)
         tok.value = "Bearer "+
           r.idToken
