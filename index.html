@@ -54,7 +54,7 @@ B"H
     }
       var attempts = 0
      inap.onclick = () => {
-       var js = mj(configData)
+       var js = mj(configData.value)
        if(!js) return inap.innerHTML = "Invalid config input. Try again? Attemps: "+
          (++attempts);
        startApp(js)
