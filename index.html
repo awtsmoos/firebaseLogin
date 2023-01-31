@@ -4,7 +4,7 @@ B"H
   Hello. Enter your firebase config data below:
   
   <br>
-  <textarea id="configData" rows=12 cols=20></textarea>
+  <textarea id="configData" rows=17 cols=60></textarea>
   <br>
   <button id="inap">Init App</button>
   <br>
@@ -20,40 +20,33 @@ B"H
   <div id="err"></div>
   <br>
   <h4>Authorization header value:</h4>
-  <textarea rows=7 cols=7 id="tok"></textarea>\
-    <script>
-     /*var mem = mj(localStorage.firebaseConfigAwtsmoos);
-     if(mem) {
-      configData.value=mem;
-     }*/
-     function mj(str) {
+  <textarea rows=20 cols=7 id="tok"></textarea>
+   
+    <script type="module">
+      var psrd = document.getElementById("psrd")
+      var usrn = document.getElementById("usrn")
+
+    window.sign=signInWithEmailAndPassword
+    var auth;
+    var app;
+    var API_KEY;
+    function startApp(firebaseConfig) {
+      console.log("Starting",window.fc=firebaseConfig)
+      var key = firebaseConfig.apiKey;
+      if(!key) {
+        return inap.innerHTML = "No valid API key in object. Try again?"
+      }
+      API_KEY=key;
+      inap.innerHTML = "Initted firebase app. Again?"
+      console.log("Started",window.app=app,window.awth=auth)
+      attempts = 0;
+    }
+    function mj(str) {
         try {
           return eval("("+str+")")
         } catch(e){return null;}
      }
-    </script>
-    <script type="module">
-        
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
-  
-      // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
-      import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js'
-  
-      // Add Firebase products that you want to use
-      import { getAuth, signInWithEmailAndPassword ,createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js'
-      import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js'
-    
-    window.sign=signInWithEmailAndPassword
-      var app;
-      var auth;
-    function startApp(firebaseConfig) {
-      
-      app = initializeApp(firebaseConfig);
 
-      auth = getAuth(app)
-      inap.innerHTML = "Initted firebase app. Again?"
-      attempts = 0;
-    }
       var attempts = 0
      inap.onclick = () => {
        var js = mj(configData.value)
@@ -67,30 +60,35 @@ B"H
     window.a=auth
     console.log("hi",a)
     cr.onclick = () => {
+        console.log("Trying to create",usrn.value,psrd.value)
       create(usrn.value,psrd.value)
       .then(r=>{
+        console.log("Created!",r)
         tok.value = "Bearer "+
-          r._tokenResponse.idToken
+          r.idToken
       }).catch(e=>{
-        err.innerHTML = e.message+""
+        console.log("Error creating:",e)
+        err.innerHTML = e+""
       })
     }
 
     lg.onclick = () => {
       signin(usrn.value,psrd.value)
       .then(r=>{
+        console.log("SIGNED!",r)
         tok.value = "Bearer "+
-          r._tokenResponse.idToken
+          r.idToken
       }).catch(e=>{
-        err.innerHTML = e.message+""
+        console.log("Error signing in:",e)
+        err.innerHTML = e+""
       })
     }
 
     
     
   function signin(us,ps) {
-    return new Promise((rs,j) => signInWithEmailAndPassword(auth,us, ps)
-    .then(r=>console.log(window.w=r,r._tokenResponse.idToken,rs(r)))
+    return new Promise((rs,j) => signInWithEmailAndPassword(us, ps,API_KEY)
+    .then(r=>console.log(rs(r)))
     .catch(e=>console.log(e,j(e))))
   }
   window.signin=signin
@@ -99,11 +97,13 @@ B"H
   
 function create(us,ps) {
   return new Promise((r,j) => {
-    createUserWithEmailAndPassword(auth, us,ps)
+    console.log("Actually creating",us,ps,window.y=auth)
+    createUserWithEmailAndPassword(us,ps,API_KEY)
     .then((userCredential) => {
 
       const user = userCredential.user;
       console.log(window.us=userCredential)
+      
       r(userCredential)
     })
     .catch((error) => {
@@ -115,6 +115,54 @@ function create(us,ps) {
   })
   
 }
+
+function createUserWithEmailAndPassword(email, password, key) {
+  const url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${key}`;
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      returnSecureToken: true
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+    return data;
+  });
+}
+
+async function signInWithEmailAndPassword(email, password,key) {
+  const endpoint = 
+    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, returnSecureToken: true })
+  };
+
+  try {
+    const response = await fetch(endpoint, requestOptions);
+    const responseJson = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(responseJson.error.message);
+    }
+    
+    return responseJson;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
     </script>
   </body>
